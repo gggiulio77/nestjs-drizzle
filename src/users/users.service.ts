@@ -36,7 +36,7 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const result = await this.db.update(users).set({ ...updateUserDto }).where(eq(users.id, id)).returning();
+    const result = (await this.db.update(users).set({ ...updateUserDto }).where(eq(users.id, id)).returning()).pop();
 
     return result;
   }

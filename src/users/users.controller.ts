@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SelectUser } from 'src/db/schema';
+import { UserDto } from './dto/user-response.dto';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 @Controller('users')
 export class UsersController {
@@ -14,18 +16,20 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(): Promise<SelectUser[]> {
+  async findAll(): Promise<UserDto[]> {
     return await this.usersService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SelectUser> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
     return await this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(id, updateUserDto);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
+    const result = await this.usersService.update(id, updateUserDto);
+
+    return plainToInstance(UserDto, result);
   }
 
   @Delete(':id')
