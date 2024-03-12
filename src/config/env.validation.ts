@@ -1,0 +1,38 @@
+import { plainToInstance } from 'class-transformer';
+import { IsDataURI, IsEnum, IsNumber, IsString, IsUrl, Max, Min, validateSync } from 'class-validator';
+import { isSQLWrapper } from 'drizzle-orm';
+
+enum Environment {
+    Development = "development",
+    Production = "production",
+    Test = "test",
+    Provision = "provision",
+}
+
+class EnvironmentVariables {
+    @IsEnum(Environment)
+    NODE_ENV: Environment;
+
+    @IsNumber()
+    @Min(0)
+    @Max(65535)
+    PORT: number;
+
+    // TODO: create custom validator for connection string or ask for all url parts
+    @IsString()
+    DB_URL: string;
+}
+
+export function validate(config: Record<string, unknown>) {
+    const validatedConfig = plainToInstance(
+        EnvironmentVariables,
+        config,
+        { enableImplicitConversion: true },
+    );
+    const errors = validateSync(validatedConfig, { skipMissingProperties: false });
+
+    if (errors.length > 0) {
+        throw new Error(errors.toString());
+    }
+    return validatedConfig;
+}
