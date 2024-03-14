@@ -1,7 +1,8 @@
-import { ApiExtraModels, ApiProperty } from "@nestjs/swagger";
-import { Role, Roles } from "../entities/user.entity";
+import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
+import { Role, Roles, User } from "../entities/user.entity";
+import { Exclude } from "class-transformer";
 
-export class UserDto {
+export class UserDto implements User {
     /**
      * User id
      * @example 1
@@ -17,6 +18,13 @@ export class UserDto {
      * @example 'john@gmail.com'
     */
     email: string;
+    /**
+     * User password
+     * @example 'easy'
+    */
+    @ApiHideProperty()
+    @Exclude()
+    password: string;
     /**
      * User role
      * @example 'admin'

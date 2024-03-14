@@ -1,5 +1,5 @@
 import { serial, text, timestamp, pgTable, pgEnum } from "drizzle-orm/pg-core";
-import { Roles } from "src/users/entities/user.entity";
+import { Roles, User } from "src/users/entities/user.entity";
 
 export const rolesEnum = pgEnum('roles', Roles);
 
@@ -13,5 +13,10 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
-export type InsertUser = typeof users.$inferInsert;
-export type SelectUser = typeof users.$inferSelect;
+const SelectUser = users.$inferSelect satisfies User;
+
+const InsertUser = users.$inferInsert satisfies Partial<User>;
+
+export type InsertUserType = typeof InsertUser;
+
+export type SelectUserType = typeof SelectUser;

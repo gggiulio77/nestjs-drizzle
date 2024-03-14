@@ -4,7 +4,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { DbProvider } from 'src/db/db.module';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { users } from 'src/db/schema';
-import { User } from './entities/user.entity';
 import { eq } from 'drizzle-orm';
 
 import * as schema from './../db/schema';

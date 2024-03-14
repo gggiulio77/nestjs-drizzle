@@ -1,15 +1,14 @@
 import { plainToInstance } from 'class-transformer';
-import { IsDataURI, IsEnum, IsNumber, IsString, IsUrl, Max, Min, validateSync } from 'class-validator';
-import { isSQLWrapper } from 'drizzle-orm';
+import { IsEnum, IsNumber, IsString, Max, Min, validateSync } from 'class-validator';
 
-enum Environment {
+export enum Environment {
     Development = "development",
     Production = "production",
     Test = "test",
     Provision = "provision",
 }
 
-class EnvironmentVariables {
+export class EnvironmentVariables {
     @IsEnum(Environment)
     NODE_ENV: Environment;
 
@@ -29,10 +28,12 @@ export function validate(config: Record<string, unknown>) {
         config,
         { enableImplicitConversion: true },
     );
+
     const errors = validateSync(validatedConfig, { skipMissingProperties: false });
 
     if (errors.length > 0) {
         throw new Error(errors.toString());
     }
+
     return validatedConfig;
 }

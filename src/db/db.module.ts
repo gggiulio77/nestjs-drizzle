@@ -3,20 +3,15 @@ import { ConfigService } from "@nestjs/config";
 import { drizzle } from 'drizzle-orm/postgres-js';
 import * as postgres from "postgres";
 import * as schema from "./schema";
+import { EnvironmentVariables } from "src/config/env.validation";
 
 export const DbProvider = 'dbProvider';
 
-interface DbConfig {
-    database: {
-        url: string,
-    },
-};
-
 const dbProvider: FactoryProvider = {
     provide: DbProvider,
-    useFactory(configService: ConfigService<DbConfig>) {
+    useFactory(configService: ConfigService<EnvironmentVariables>) {
         // TODO: review this approach, don't error with no connection to DB
-        const url = configService.get("database.url", { infer: true });
+        const url = configService.get("DB_URL", { infer: true });
 
         const client = postgres(url);
 

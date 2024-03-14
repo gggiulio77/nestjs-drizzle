@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { SelectUser } from 'src/db/schema';
 import { UserDto } from './dto/user-response.dto';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +16,9 @@ export class UsersController {
 
   @Get()
   async findAll(): Promise<UserDto[]> {
-    return await this.usersService.findAll();
+    const result = await this.usersService.findAll();
+
+    return plainToInstance(UserDto, result);
   }
 
   @Get(':id')
