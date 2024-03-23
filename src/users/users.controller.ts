@@ -1,40 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    ParseIntPipe,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user-response.dto';
+import { ResponseUserDto } from './dto/response-user.dto';
 import { plainToInstance } from 'class-transformer';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+    constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
+    /**
+     * Create users
+     */
+    @Post()
+    create(@Body() createUserDto: CreateUserDto) {
+        return this.usersService.create(createUserDto);
+    }
 
-  @Get()
-  async findAll(): Promise<UserDto[]> {
-    const result = await this.usersService.findAll();
+    /**
+     * Get all users
+     */
+    @Get()
+    async findAll(): Promise<ResponseUserDto[]> {
+        const result = await this.usersService.findAll();
 
-    return plainToInstance(UserDto, result);
-  }
+        return plainToInstance(ResponseUserDto, result);
+    }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
-    return await this.usersService.findOne(id);
-  }
+    /**
+     * Get user by id
+     */
+    @Get(':id')
+    async findOne(
+        @Param('id', ParseIntPipe) id: number
+    ): Promise<ResponseUserDto> {
+        const result = await this.usersService.findOne(id);
 
-  @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
-    const result = await this.usersService.update(id, updateUserDto);
+        return plainToInstance(ResponseUserDto, result);
+    }
 
-    return plainToInstance(UserDto, result);
-  }
+    /**
+     * Update user
+     */
+    @Patch(':id')
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateUserDto: UpdateUserDto
+    ): Promise<ResponseUserDto> {
+        const result = await this.usersService.update(id, updateUserDto);
 
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.usersService.remove(id);
-  }
+        return plainToInstance(ResponseUserDto, result);
+    }
+
+    /**
+     * Delete user
+     */
+    @Delete(':id')
+    async remove(@Param('id', ParseIntPipe) id: number) {
+        return await this.usersService.remove(id);
+    }
 }
