@@ -9,19 +9,22 @@ import { Environment, EnvironmentVariables } from './env.validation';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (config: ConfigService<EnvironmentVariables>) => {
-
                 const environment = config.get('NODE_ENV', { infer: true });
 
                 return {
                     pinoHttp: {
-                        level: environment === Environment.Development ? 'debug' : 'error',
-                        transport: environment !== Environment.Production
-                            ? { target: 'pino-pretty' }
-                            : undefined,
-                    }
+                        level:
+                            environment === Environment.Development
+                                ? 'debug'
+                                : 'error',
+                        transport:
+                            environment !== Environment.Production
+                                ? { target: 'pino-pretty' }
+                                : undefined,
+                    },
                 };
-            }
-        })
+            },
+        }),
     ],
 })
-export class LoggerModule { }
+export class LoggerModule {}
