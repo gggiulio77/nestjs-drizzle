@@ -1,5 +1,5 @@
 import { serial, text, timestamp, pgTable, pgEnum } from 'drizzle-orm/pg-core';
-import { Roles, User } from 'src/users/entities/user.entity';
+import { Roles, User } from '@users/entities/user.entity';
 
 export const rolesEnum = pgEnum('roles', Roles);
 
@@ -7,7 +7,7 @@ export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     email: text('email').unique().notNull(),
-    password: text('password').notNull(),
+    hashPassword: text('hash_password').notNull(),
     role: rolesEnum('role').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true })
         .defaultNow()

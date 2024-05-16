@@ -1,13 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DbProvider } from 'src/db/db.module';
+import { DbProvider } from '@db/db.module';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { users } from 'src/db/schema';
+import { users } from '@db/schema';
 import { eq } from 'drizzle-orm';
 
-import * as schema from './../db/schema';
+import * as schema from '@db/schema';
 import { User } from './entities/user.entity';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -16,10 +21,19 @@ export class UsersService {
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<never[]> {
-        // TODO: implement hashing
-        const result = await this.db.insert(users).values([createUserDto]);
+        try {
+            const { password, ...rest } = createUserDto;
+            // TODO: think about a hashing/verify service to abstract the methods (hash, verify)
+            const hashPassword = await argon2.hash(password);
 
-        return result;
+            const result = await this.db
+                .insert(users)
+                .values([{ ...rest, hashPassword }]);
+
+            return result;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     async findAll(): Promise<User[]> {

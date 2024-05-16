@@ -5,7 +5,7 @@ export class User {
     id: number;
     name: string;
     email: string;
-    password: string;
+    hashPassword: string;
     role: Role;
     createdAt: Date;
     updatedAt: Date;

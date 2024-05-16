@@ -24,7 +24,7 @@ export class ResponseUserDto implements User {
      */
     @ApiHideProperty()
     @Exclude()
-    password: string;
+    hashPassword: string;
     /**
      * User role
      * @example 'admin'
