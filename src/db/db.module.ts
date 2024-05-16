@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import * as postgres from 'postgres';
 import * as schema from './schema';
-import { EnvironmentVariables } from 'src/config/env.validation';
+import { EnvironmentVariables } from '@config/env.validation';
 
 export const DbProvider = 'dbProvider';
 

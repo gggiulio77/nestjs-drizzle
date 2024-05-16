@@ -17,6 +17,12 @@
         "strictBindCallApply": false,
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "paths": {
+            "@users/*": ["./src/users/*"],
+            "@db/*": ["./src/db/*"],
+            "@auth/*": ["./src/auth/*"],
+            "@config/*": ["./src/config/*"]
+        }
     }
 }

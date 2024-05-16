@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { LoginDto } from './dto/login.dto';
 import { Request } from 'express';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '@users/entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseLoginDto } from './dto/response-login.dto';
 import { plainToInstance } from 'class-transformer';
@@ -43,4 +43,6 @@ export class AuthController {
 
         return plainToInstance(ResponseLoginDto, result);
     }
+
+    // TODO: add refresh method
 }
