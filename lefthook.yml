@@ -1,0 +1,20 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+#
+pre-push:
+    parallel: true
+    commands:
+        format:
+            run: npx prettier -c {push_files}
+        lint:
+            glob: '*.{js,ts,jsx,tsx}'
+            run: npx eslint {push_files}
+        test:
+            run: npm run test
+
+commit-msg:
+    commands:
+        check:
+            run: npx commitlint --edit {1}
