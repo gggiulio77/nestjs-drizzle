@@ -7,15 +7,19 @@ import {
     Param,
     Delete,
     ParseIntPipe,
+    HttpStatus,
+    Res,
+    HttpCode,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { plainToInstance } from 'class-transformer';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
-@Controller('users')
+@Controller({ path: 'users', version: '1' })
 @ApiTags('users')
 @ApiBearerAuth()
 export class UsersController {
@@ -42,13 +46,22 @@ export class UsersController {
     /**
      * Get user by id
      */
+    @ApiNoContentResponse()
     @Get(':id')
     async findOne(
-        @Param('id', ParseIntPipe) id: number
-    ): Promise<ResponseUserDto> {
+        @Param('id', ParseIntPipe) id: number,
+        @Res() response: Response
+    ): Promise<ResponseUserDto | undefined> {
         const result = await this.usersService.findOne(id);
+        // TODO: think about this approach, maybe we can throw NotFound instead and remove @Res injection
+        if (!result) {
+            response.status(HttpStatus.NO_CONTENT).send();
+            return undefined;
+        }
 
-        return plainToInstance(ResponseUserDto, result);
+        const user = plainToInstance(ResponseUserDto, result);
+
+        response.json(user).send();
     }
 
     /**
@@ -67,6 +80,7 @@ export class UsersController {
     /**
      * Delete user
      */
+    @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return await this.usersService.remove(id);

@@ -9,6 +9,7 @@ import { Environment, EnvironmentVariables } from './env.validation';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (config: ConfigService<EnvironmentVariables>) => {
+                // TODO: add a method to generate ids (something like uuid)
                 const environment = config.get('NODE_ENV', { infer: true });
 
                 return {

@@ -13,6 +13,7 @@ import { HealthModule } from './health/health.module';
     imports: [
         UsersModule,
         DbModule,
+        // TODO: review this approach, maybe is more explicit to import ir in each module
         ConfigModule.forRoot({ validate, isGlobal: true }),
         LoggerModule,
         AuthModule,

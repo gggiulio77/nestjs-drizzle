@@ -23,7 +23,7 @@ declare module 'express-serve-static-core' {
     }
 }
 
-@Controller('auth')
+@Controller({ path: 'auth', version: '1' })
 @ApiTags('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}

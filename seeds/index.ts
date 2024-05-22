@@ -5,8 +5,6 @@ import { CreateUserDto } from '@users/dto/create-user.dto';
 import * as argon2 from 'argon2';
 import { users } from '@db/schema';
 
-// TODO: replace relative paths with ts-paths @
-
 async function run() {
     dotenv.config();
 

@@ -4,7 +4,6 @@ import {
     PostgreSqlContainer,
     StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql';
-import { DbModule } from '@db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import * as postgres from 'postgres';
@@ -13,6 +12,8 @@ import * as schema from '@db/schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { Except } from '@utility/index';
+import { UsersModule } from './users.module';
+import { DrizzleService } from '@db/db.service';
 
 describe('UsersService', () => {
     let service: UsersService;
@@ -33,11 +34,12 @@ describe('UsersService', () => {
         const testConfig = ConfigModule.forRoot({
             ignoreEnvFile: true,
             load: [() => ({ DB_URL: url })],
+            isGlobal: true,
         });
 
         moduleRef = await Test.createTestingModule({
-            providers: [UsersService],
-            imports: [DbModule],
+            providers: [UsersService, DrizzleService],
+            imports: [UsersModule, ConfigModule],
         })
             .overrideModule(ConfigModule)
             .useModule(testConfig)
