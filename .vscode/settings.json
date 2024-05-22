@@ -1,3 +1,10 @@
 {
-    "cSpell.words": ["commitlint", "pino", "stategy", "testcontainers"]
+    "cSpell.words": [
+        "commitlint",
+        "compodoc",
+        "lefthook",
+        "pino",
+        "stategy",
+        "testcontainers"
+    ]
 }
