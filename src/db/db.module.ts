@@ -1,30 +1,14 @@
-import { FactoryProvider, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import * as postgres from 'postgres';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as schema from './schema';
-import { EnvironmentVariables } from '@config/env.validation';
+import { DrizzleService } from './db.service';
 
-export const DbProvider = 'dbProvider';
-
-const dbProvider: FactoryProvider = {
-    provide: DbProvider,
-    useFactory(configService: ConfigService<EnvironmentVariables>) {
-        // TODO: review this approach, don't error with no connection to DB
-        const url = configService.get('DB_URL', { infer: true });
-
-        const client = postgres(url);
-
-        const db = drizzle(client, { schema });
-
-        return db;
-    },
-    inject: [ConfigService],
-};
+export type DatabaseType = PostgresJsDatabase<typeof schema>;
 
 @Module({
-    providers: [dbProvider],
-    exports: [dbProvider],
-    imports: [],
+    providers: [DrizzleService],
+    exports: [DrizzleService],
+    imports: [ConfigModule],
 })
 export class DbModule {}

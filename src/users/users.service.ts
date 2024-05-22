@@ -1,24 +1,21 @@
-import {
-    Inject,
-    Injectable,
-    InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DbProvider } from '@db/db.module';
-import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { DatabaseType } from '@db/db.module';
 import { users } from '@db/schema';
 import { eq } from 'drizzle-orm';
-
-import * as schema from '@db/schema';
 import { User } from './entities/user.entity';
 import * as argon2 from 'argon2';
+import { DrizzleService } from '@db/db.service';
 
 @Injectable()
 export class UsersService {
-    constructor(
-        @Inject(DbProvider) private db: PostgresJsDatabase<typeof schema>
-    ) {}
+    private db: DatabaseType;
+
+    constructor(drizzle: DrizzleService) {
+        // TODO: find a better way to achieve this
+        this.db = drizzle.db;
+    }
 
     async create(createUserDto: CreateUserDto): Promise<never[]> {
         try {
