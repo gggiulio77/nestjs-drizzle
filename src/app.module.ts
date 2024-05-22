@@ -7,6 +7,7 @@ import { validate } from './config/env.validation';
 import { DbModule } from './db/db.module';
 import { LoggerModule } from './config/logger.module';
 import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
         ConfigModule.forRoot({ validate, isGlobal: true }),
         LoggerModule,
         AuthModule,
+        HealthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
