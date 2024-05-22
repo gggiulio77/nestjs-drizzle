@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '@users/entities/user.entity';
 import { UsersService } from '@users/users.service';
 import * as argon2 from 'argon2';
+import { Except } from '@utility/index';
 
 export interface JwtPayload {
     sub: User['id'];
@@ -19,7 +20,7 @@ export class AuthService {
     async validateUser(
         email: string,
         password: string
-    ): Promise<Omit<User, User['hashPassword']> | null> {
+    ): Promise<Except<User, 'hashPassword'> | null> {
         const user = await this.usersService.findOne(email);
 
         if (user == undefined || user == null) return null;

@@ -17,12 +17,14 @@
         "strictBindCallApply": false,
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
-        "noUnusedLocals": true,
+        // TODO: we had the eslint equivalent with an ignore pattern ('_'). Review is this needs to be true
+        "noUnusedLocals": false,
         "paths": {
             "@users/*": ["./src/users/*"],
             "@db/*": ["./src/db/*"],
             "@auth/*": ["./src/auth/*"],
-            "@config/*": ["./src/config/*"]
+            "@config/*": ["./src/config/*"],
+            "@utility/*": ["./src/utility/*"]
         }
     }
 }

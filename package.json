@@ -100,6 +100,7 @@
             "^@db/(.*)$": "<rootDir>/db/$1",
             "^@auth/(.*)$": "<rootDir>/auth/$1",
             "^@config/(.*)$": "<rootDir>/config/$1",
+            "^@utility/(.*)$": "<rootDir>/utility/$1"
         }
     }
 }
