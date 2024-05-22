@@ -10,7 +10,7 @@ import { DrizzleService } from '@db/db.service';
 
 @Injectable()
 export class UsersService {
-    private db: DatabaseType;
+    private readonly db: DatabaseType;
 
     constructor(drizzle: DrizzleService) {
         // TODO: find a better way to achieve this

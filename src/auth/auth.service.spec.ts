@@ -68,7 +68,7 @@ describe('AuthService', () => {
             password
         );
 
-        expect(result).toStrictEqual(null);
+        expect(result).toStrictEqual(undefined);
     });
 
     it('validateUser when users exists in db', async () => {

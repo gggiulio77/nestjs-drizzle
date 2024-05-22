@@ -26,7 +26,7 @@ declare module 'express-serve-static-core' {
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-    constructor(private authService: AuthService) {}
+    constructor(private readonly authService: AuthService) {}
 
     /**
      * Log in endpoint

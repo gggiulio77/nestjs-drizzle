@@ -15,9 +15,9 @@ import { ResponseUserDto } from './dto/response-user.dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiBearerAuth()
 @Controller('users')
 @ApiTags('users')
+@ApiBearerAuth()
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 

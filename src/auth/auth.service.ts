@@ -13,17 +13,17 @@ export interface JwtPayload {
 @Injectable()
 export class AuthService {
     constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService
     ) {}
 
     async validateUser(
         email: string,
         password: string
-    ): Promise<Except<User, 'hashPassword'> | null> {
+    ): Promise<Except<User, 'hashPassword'> | undefined> {
         const user = await this.usersService.findOne(email);
 
-        if (user == undefined || user == null) return null;
+        if (!user) return undefined;
         // TODO: think about a hashing/verify service to abstract the methods (hash, verify)
         const isPassword = await argon2.verify(user.hashPassword, password);
 
@@ -33,7 +33,7 @@ export class AuthService {
             return result;
         }
 
-        return null;
+        return undefined;
     }
 
     async login(user: User): Promise<Record<'access_token', string>> {

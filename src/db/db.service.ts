@@ -9,10 +9,12 @@ import * as schema from './schema';
 // TODO: first approach to this "class provider"
 @Injectable()
 export class DrizzleService implements OnModuleDestroy {
-    private client: postgres.Sql;
-    public db: DatabaseType;
+    private readonly client: postgres.Sql;
+    public readonly db: DatabaseType;
 
-    constructor(private configService: ConfigService<EnvironmentVariables>) {
+    constructor(
+        private readonly configService: ConfigService<EnvironmentVariables>
+    ) {
         const url = this.configService.get('DB_URL', { infer: true });
 
         this.client = postgres(url);
