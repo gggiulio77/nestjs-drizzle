@@ -7,7 +7,7 @@ pre-push:
     parallel: true
     commands:
         format:
-            run: npx prettier -c {push_files}
+            run: npm run format -c {push_files}
         lint:
             glob: '*.{js,ts,jsx,tsx}'
             run: npx eslint {push_files}
