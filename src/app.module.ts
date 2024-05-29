@@ -1,25 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
-import { validate } from './config/env.validation';
 import { DbModule } from './db/db.module';
 import { LoggerModule } from './config/logger.module';
 import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
+import { ConfigModule } from '@nestjs/config';
+import { Environment, validate } from '@config/env.validation';
 
 @Module({
     imports: [
         UsersModule,
         DbModule,
-        // TODO: review this approach, maybe is more explicit to import ir in each module
-        ConfigModule.forRoot({ validate, isGlobal: true }),
+        // TODO: review this global approach of instantiating
+        ConfigModule.forRoot({
+            isGlobal: true,
+            // TODO: review this conditional way of doing things, it works but i don't like it
+            ...(process.env.NODE_ENV === Environment.Test ? {} : { validate }),
+            ignoreEnvFile: process.env.NODE_ENV === Environment.Test,
+        }),
         LoggerModule,
         AuthModule,
         HealthModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [],
+    providers: [],
 })
 export class AppModule {}

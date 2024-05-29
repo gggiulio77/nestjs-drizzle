@@ -3,6 +3,7 @@
         "commitlint",
         "compodoc",
         "lefthook",
+        "nestjs",
         "pino",
         "stategy",
         "testcontainers"

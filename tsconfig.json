@@ -24,7 +24,8 @@
             "@db/*": ["./src/db/*"],
             "@auth/*": ["./src/auth/*"],
             "@config/*": ["./src/config/*"],
-            "@utility/*": ["./src/utility/*"]
+            "@utility/*": ["./src/utility/*"],
+            "@health/*": ["./src/health/*"]
         }
     }
 }

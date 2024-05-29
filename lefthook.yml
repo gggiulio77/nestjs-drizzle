@@ -12,7 +12,7 @@ pre-push:
             glob: '*.{js,ts,jsx,tsx}'
             run: npx eslint {push_files}
         test:
-            run: npm run test
+            run: npm run test && npm run test:e2e
 
 commit-msg:
     commands:
